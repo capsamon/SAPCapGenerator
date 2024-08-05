@@ -1,1 +1,1 @@
-# SAPCapGenerator
+# This repo is Copyright of me, Caspar van Tergouw :D

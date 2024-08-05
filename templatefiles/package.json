@@ -1,0 +1,121 @@
+{
+    "name": "<SERVICENAME>-srv",
+    "version": "0.0.1",
+    "description": "<SERVICENAME> CAP service",
+    "repository": "https://bitbucket.org/asmlitccbbdp/<REPOSITORYNAME>",
+    "license": "",
+    "private": true,
+    "dependencies": {
+      "@sap/audit-logging": "^6.x",
+      "@sap/cds": "^8.0.3",
+      "@sap/cds-dk": "^8.0.2",
+      "@sap/cds-compiler": "^5.x",
+      "@cap-js-community/odata-v2-adapter": "^1.x",
+      "hdb": "^0.19.8",
+      "@sap/hdbext": "^8.x",
+      "@sap/xsenv": "^5.x",
+      "@sap/xssec": "^4.1.3",
+      "cds-swagger-ui-express": "^0.x",
+      "express": "^4.x",
+      "passport": "^0.x",
+      "sap-hdbext-promisfied": "^2.202405.1"
+    },
+    "scripts": {
+      "start": "npm run cleanup:modules && npm install --production && cds build && cds run",
+      "start:debug": "npx -n=\"--inspect=127.0.0.1:22562\" cds run",
+      "start:develop": "cds run --profile nosecurity",
+      "cleanup:modules": "rm -rf node_modules && rm -rf */node_modules && rm -rf */*/node_modules"
+    },
+    "engines": {
+      "node": ">=18.x"
+    },
+    "eslintConfig": {
+      "extends": "eslint:recommended",
+      "env": {
+        "es2020": true,
+        "node": true,
+        "jest": true,
+        "mocha": true
+      },
+      "globals": {
+        "SELECT": true,
+        "INSERT": true,
+        "UPDATE": true,
+        "DELETE": true,
+        "CREATE": true,
+        "DROP": true,
+        "CDL": true,
+        "CQL": true,
+        "CXL": true,
+        "cds": true
+      },
+      "rules": {
+        "no-console": "off",
+        "require-atomic-updates": "off"
+      }
+    },
+    "cds": {
+      "build": {
+        "target": ".",
+        "tasks": [
+          {
+            "for": "node-cf",
+            "src": "."
+          }
+        ]
+      },
+      "hana": {
+        "deploy-format": "hdbtable",
+        "syntax": "hdi"
+      },
+      "requires": {
+        "db": {
+          "kind": "hana",
+          "pool": {
+            "acquireTimeoutMillis": 60000,
+            "min": 10,
+            "max": 200,
+            "evictionRunIntervalMillis": 30000,
+            "numTestsPerEvictionRun": 50,
+            "softIdleTimeoutMillis": 60000,
+            "idleTimeoutMillis": 60000
+          },
+          "model": [
+            "db",
+            "srv"
+          ]
+        },
+        "node-cf": {
+          "model": "gen/srv/csn.json"
+        },
+        "uaa": {
+          "kind": "xsuaa"
+        },
+        "[localtest]": {
+          "auth": {
+            "kind": "basic-auth",
+            "users": {
+              "joop": {
+                "password": "joop",
+                "roles": [
+                  "<SERVICENAME>_READ"
+                ]
+              }
+            }
+          }
+        },
+        "[nosecurity]": {
+          "auth": {
+            "kind": "dummy-auth"
+          }
+        }
+      },
+      "odata": {
+        "version": "v4"
+      }
+    },
+    "files": [
+      "db",
+      "srv"
+    ]
+  }
