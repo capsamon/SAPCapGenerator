@@ -1,6 +1,6 @@
 const proxy = require('@cap-js-community/odata-v2-adapter')
 const cds = require('@sap/cds');
-const passportUtils = require('./utils/passportUtils');
+const passportUtils = require('./utils/PassportUtils');
 
 cds.once('listening', ({ server }) => {
     server.keepAliveTimeout = 3 * 60 * 1000 // > 3 mins

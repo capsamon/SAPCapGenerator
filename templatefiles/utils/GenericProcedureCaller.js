@@ -1,4 +1,4 @@
-const databaseConnection = require("../database/DatabaseConnection");
+const databaseConnection = require("../utils/DatabaseConnection");
 const hdbext = require('@sap/hdbext');
 
 module.exports = async function(dataObject, procedureName){
