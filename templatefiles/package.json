@@ -13,7 +13,7 @@
         "@cap-js-community/odata-v2-adapter": "^1.x",
         "@sap/audit-logging": "^6.x",
         "@sap/cds": "^8.2.3",
-        "@sap/cds-dk": "8.2.3",
+        "@sap/cds-dk": "^8.2.3",
         "@sap/cds-compiler": "^5.x",
         "@sap/hdbext": "^8.x",
         "@sap/xsenv": "^5.x",
