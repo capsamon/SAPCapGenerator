@@ -29,5 +29,10 @@
     },
     "include": [
         "./**/*"
+    ],
+    "typeRoots": [
+        "./node_modules/@types",
+        "./node_modules/@cap-js/ts-types-esm/",
+        "./types"
     ]
 }

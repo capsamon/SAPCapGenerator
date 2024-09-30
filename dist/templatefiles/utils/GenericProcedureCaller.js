@@ -1,7 +1,6 @@
-"use strict";
-const databaseConnection = require("../database/DatabaseConnection");
+const databaseConnection = require("../utils/DatabaseConnection");
 const hdbext = require('@sap/hdbext');
-module.exports = async function (dataObject, procedureName) {
+export default async function (dataObject, procedureName) {
     try {
         const dbConn = databaseConnection.getConnection();
         const _procedureToCall = await dbConn.loadProcedurePromisified(hdbext, null, procedureName);
@@ -14,4 +13,5 @@ module.exports = async function (dataObject, procedureName) {
             message: error
         };
     }
-};
+}
+;

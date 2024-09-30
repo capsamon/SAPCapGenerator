@@ -1,12 +1,12 @@
-const xsenv = require("@sap/xsenv");
-const { XssecPassportStrategy, XsuaaService } = require('@sap/xssec');
-const passport = require("passport");
-const express = require('express');
+import xsenv from "@sap/xsenv";
+import { XssecPassportStrategy, XsuaaService } from '@sap/xssec';
+import passport from "passport";
+import express from "express";
 
-module.exports = {
+export default {
     initializeUserInformationEndpoint: function() {
         const router = express.Router();
-        const samlUaa = xsenv.readCFServices()['uaa_pricedelta'].credentials;
+        const samlUaa = xsenv.readCFServices()['uaa_pricedelta'].credentials as any;
         const authService = new XsuaaService(samlUaa);
         const strategy = new XssecPassportStrategy(authService);
         passport.use('JWT', strategy);
@@ -15,7 +15,7 @@ module.exports = {
     },
 
     fetchUserInformation: function(){
-        return (req, res) => {
+        return (req: any, res: any) => {
             return res.send({
                 result: {
                     user: req.user,

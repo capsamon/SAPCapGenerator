@@ -1,8 +1,7 @@
-"use strict";
-const cds = require('@sap/cds');
-const dbClass = require("sap-hdbext-promisfied");
-_connection = null;
-module.exports = {
+import { cds } from "@sap/cds";
+import dbClass from "sap-hdbext-promisfied";
+let _connection = null;
+export default {
     setupConnection: async function () {
         const db = await cds.connect.to('db');
         _connection = new dbClass(await dbClass.createConnection(db.options.credentials));

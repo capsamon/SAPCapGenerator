@@ -1,0 +1,14 @@
+import cds from "@sap/cds";
+import dbClass from "sap-hdbext-promisfied";
+
+let _connection: dbClass = null;
+export default {
+    async setupConnection(){
+        const db = await cds.connect.to('db');
+        _connection = new dbClass(await dbClass.createConnection((db as any).options.credentials));
+    },
+
+    getConnection(): dbClass | null {
+        return _connection;
+    }
+};
