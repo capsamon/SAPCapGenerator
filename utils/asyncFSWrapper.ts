@@ -1,6 +1,6 @@
 const fs = require("fs");
-module.exports = {
-    readFileAsync: function(fileLocation: string) {
+export default {
+    readFileAsync(fileLocation: string): Promise<string> {
         return new Promise((resolve, reject) => {
             fs.readFile(fileLocation, 'utf8', (err: any, data: any) => {
                 if (err) reject(err);

@@ -1,4 +1,6 @@
-const { readFileAsync, writeFileAsync, makeDirectoryAsync } = require("./utils/asyncFSWrapper")
+import asyncFSWrapper from "./utils/asyncFSWrapper";
+import asyncTerminalWrapper from "./utils/asyncTerminalWrapper";
+
 async function asyncWrapper() {
     let params: Array<{paramName: string, paramValue: string}> = [];
     process.argv.forEach((val, index) => {
@@ -13,7 +15,7 @@ async function asyncWrapper() {
         !params.find(param => param.paramName === "UAASERVICE")
     ) {
         console.error("Incorrect parameters supplied, please supply SERVICENAME, REPOSITORYNAME, DESIREDLOCATION and UAASERVICE");
-        console.error("example: tsx ./Generator.ts --SERVICENAME PRICE_DELTA --REPOSITORYNAME hana_sc_spend --DESIREDLOCATION /test/here --UAASERVICE uaa_pricedelta");
+        console.error("example: tsx ./Generator.ts --SERVICENAME PRICE_DELTA --REPOSITORYNAME hana_sc_spend --DESIREDLOCATION /hana_testing_repo --UAASERVICE uaa_pricedelta");
         process.exit();
     };
     
@@ -43,7 +45,7 @@ async function asyncWrapper() {
         processedList.push(
             new Promise(async (resolve, reject) => {
                 console.log(`\nReading file ${location} ...`);
-                const fileContent = await readFileAsync(location);
+                const fileContent = await asyncFSWrapper.readFileAsync(location);
                 resolve({ 
                     templateLocation: location, 
                     desiredLocation: location.replaceAll("./templatefiles", desiredLocation).replaceAll("<SERVICENAME>", serviceName).replaceAll("<REPOSITORYNAME>", repositoryName).replaceAll("<UAASERVICE>", uaaService).replace(".txt", ""), 
@@ -57,21 +59,24 @@ async function asyncWrapper() {
     await Promise.all(processedList);
 
     console.log("\nCreating directories...");
-    await makeDirectoryAsync("/home/user/projects" + desiredLocation);
-    await makeDirectoryAsync("/home/user/projects" + desiredLocation + "/lib");
-    await makeDirectoryAsync("/home/user/projects" + desiredLocation + "/utils");
+    await asyncFSWrapper.makeDirectoryAsync("/home/user/projects" + desiredLocation);
+    await asyncFSWrapper.makeDirectoryAsync("/home/user/projects" + desiredLocation + "/lib");
+    await asyncFSWrapper.makeDirectoryAsync("/home/user/projects" + desiredLocation + "/utils");
     
     const writingPromises: Array<Promise<any>> = [];
     processedList.forEach(promise => promise.then(value => {
         console.log("Starting writing of file: " + value.desiredLocation);
-        writingPromises.push(writeFileAsync(value.desiredLocation, value.fileContent));
+        writingPromises.push(asyncFSWrapper.writeFileAsync(value.desiredLocation, value.fileContent));
     }));
 
     await Promise.all(writingPromises);
+
+    console.log("\nAttempting to preinstall node modules and run cds build command...");
+    await asyncTerminalWrapper.executeTerminalCommandAsync(`cd /home/user/projects${desiredLocation} && npm install && cds build`);
     console.log("\nCompleted successfully!");
 
     console.log("\nWe cannot automate everything, so...");
-    console.log("Don't forget to run an npm install, cds build commands and binding of the uaa service.. ;)");
+    console.log("Don't forget to run the binding of the uaa service and hdi schema... ;)");
     console.log("There has to be something left for the next innovation sprint, right?");
 }
 
