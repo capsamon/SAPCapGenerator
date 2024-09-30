@@ -29,7 +29,8 @@ async function asyncWrapper() {
         "./templatefiles/utils/PassportUtils.ts.txt",
         "./templatefiles/utils/GenericProcedureCaller.ts.txt",
         "./templatefiles/utils/DatabaseConnection.ts.txt",
-        "./templatefiles/lib/<SERVICENAME>.ts.txt"
+        "./templatefiles/lib/<SERVICENAME>.ts.txt",
+        "./templatefiles/decs.d.ts.txt"
     ];
 
     const desiredLocation = params.find(param => param.paramName === "DESIREDLOCATION")?.paramValue + "/srv";
