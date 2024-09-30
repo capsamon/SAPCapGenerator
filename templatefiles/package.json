@@ -29,7 +29,8 @@
         "@types/sap__xsenv": "^3.3.2",
         "tsx": "4.19.1",
         "@types/passport": "^1.0.16",
-        "@types/node": "^22.7.3"
+        "@types/node": "^22.7.3",
+        "@sap/cds-dk": "8.2.3"
     },
     "scripts": {
       "preinstall": "npm -v && node -v",
